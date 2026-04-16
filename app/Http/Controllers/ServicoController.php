@@ -5,63 +5,50 @@ namespace App\Http\Controllers;
 use App\Models\Servico;
 use App\Http\Requests\StoreServicoRequest;
 use App\Http\Requests\UpdateServicoRequest;
+use Illuminate\Http\Request;
 
 class ServicoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $servicos = Servico::all();
+        $query = Servico::query();
+
+        if ($request->filled('search')) {
+            $query->where('nome', 'like', '%' . $request->search . '%')
+                ->orWhere('descricao', 'like', '%' . $request->search . '%');
+        }
+
+        $servicos = $query->get();
         return view('servicos.index', compact('servicos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('servicos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreServicoRequest $request)
     {
         Servico::create($request->validated());
         return redirect()->route('servicos.index')->with('success', 'Serviço criado com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Servico $servico)
     {
         return view('servicos.show', compact('servico'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Servico $servico)
     {
         return view('servicos.edit', compact('servico'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateServicoRequest $request, Servico $servico)
     {
         $servico->update($request->validated());
         return redirect()->route('servicos.index')->with('success', 'Serviço atualizado com sucesso.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Servico $servico)
     {
         $servico->delete();

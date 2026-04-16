@@ -3,74 +3,98 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agendamento;
+use App\Models\Cliente;
+use App\Models\Servico;
+use App\Models\User;
 use App\Http\Requests\StoreAgendamentoRequest;
 use App\Http\Requests\UpdateAgendamentoRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgendamentoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $agendamentos = Agendamento::with('cliente', 'servico', 'barbeiro')->get();
+        $query = Agendamento::with('cliente', 'servico', 'barbeiro');
+
+        if (Auth::user()->isBarbeiro()) {
+            $query->where('barbeiro_id', Auth::id());
+        }
+
+        if ($request->filled('search')) {
+            $term = '%' . $request->search . '%';
+            $query->where(function ($query) use ($term) {
+                $query->whereHas('cliente', fn ($q) => $q->where('nome', 'like', $term))
+                    ->orWhereHas('barbeiro', fn ($q) => $q->where('name', 'like', $term));
+            });
+        }
+
+        $agendamentos = $query->get();
         return view('agendamentos.index', compact('agendamentos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
+        abort_unless(Auth::user()->isAdministrador(), 403);
+
         $clientes = Cliente::all();
         $servicos = Servico::all();
         $barbeiros = User::where('cargo', 'barbeiro')->get();
         return view('agendamentos.create', compact('clientes', 'servicos', 'barbeiros'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreAgendamentoRequest $request)
     {
+        abort_unless(Auth::user()->isAdministrador(), 403);
+
         Agendamento::create($request->validated());
         return redirect()->route('agendamentos.index')->with('success', 'Agendamento criado com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Agendamento $agendamento)
     {
+        abort_unless(
+            Auth::user()->isAdministrador() || Auth::id() === $agendamento->barbeiro_id,
+            403
+        );
+
         $agendamento->load('cliente', 'servico', 'barbeiro');
         return view('agendamentos.show', compact('agendamento'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Agendamento $agendamento)
     {
-        $clientes = Cliente::all();
-        $servicos = Servico::all();
-        $barbeiros = User::where('cargo', 'barbeiro')->get();
-        return view('agendamentos.edit', compact('agendamento', 'clientes', 'servicos', 'barbeiros'));
+        if (Auth::user()->isAdministrador()) {
+            $clientes = Cliente::all();
+            $servicos = Servico::all();
+            $barbeiros = User::where('cargo', 'barbeiro')->get();
+            return view('agendamentos.edit', compact('agendamento', 'clientes', 'servicos', 'barbeiros'));
+        }
+
+        abort_unless(Auth::id() === $agendamento->barbeiro_id, 403);
+        return view('agendamentos.edit', compact('agendamento'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateAgendamentoRequest $request, Agendamento $agendamento)
     {
-        $agendamento->update($request->validated());
-        return redirect()->route('agendamentos.index')->with('success', 'Agendamento atualizado com sucesso.');
+        if (Auth::user()->isAdministrador()) {
+            $agendamento->update($request->validated());
+            return redirect()->route('agendamentos.index')->with('success', 'Agendamento atualizado com sucesso.');
+        }
+
+        abort_unless(Auth::id() === $agendamento->barbeiro_id, 403);
+        $validated = $request->validate([
+            'status' => 'required|in:agendado,concluido,cancelado',
+        ]);
+
+        $agendamento->update($validated);
+        return redirect()->route('agendamentos.index')->with('success', 'Status do agendamento atualizado.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Agendamento $agendamento)
     {
+        abort_unless(Auth::user()->isAdministrador(), 403);
+
         $agendamento->delete();
         return redirect()->route('agendamentos.index')->with('success', 'Agendamento deletado com sucesso.');
     }

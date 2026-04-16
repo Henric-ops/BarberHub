@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Agendamento;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -30,5 +31,38 @@ class UpdateAgendamentoRequest extends FormRequest
             'data_hora_fim' => 'nullable|date_format:Y-m-d H:i|after:data_hora_inicio',
             'status' => 'nullable|in:agendado,concluido,cancelado',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $agendamento = $this->route('agendamento');
+
+            if (! $agendamento) {
+                return;
+            }
+
+            $barbeiroId = $this->filled('barbeiro_id') ? $this->barbeiro_id : $agendamento->barbeiro_id;
+            $dataHoraInicio = $this->filled('data_hora_inicio') ? $this->data_hora_inicio : $agendamento->data_hora_inicio->format('Y-m-d H:i');
+            $dataHoraFim = $this->filled('data_hora_fim') ? $this->data_hora_fim : $agendamento->data_hora_fim->format('Y-m-d H:i');
+
+            if ($barbeiroId && $dataHoraInicio && $dataHoraFim) {
+                $conflict = Agendamento::where('barbeiro_id', $barbeiroId)
+                    ->where('id', '<>', $agendamento->id)
+                    ->where(function ($query) use ($dataHoraInicio, $dataHoraFim) {
+                        $query->whereBetween('data_hora_inicio', [$dataHoraInicio, $dataHoraFim])
+                            ->orWhereBetween('data_hora_fim', [$dataHoraInicio, $dataHoraFim])
+                            ->orWhere(function ($query) use ($dataHoraInicio, $dataHoraFim) {
+                                $query->where('data_hora_inicio', '<', $dataHoraInicio)
+                                    ->where('data_hora_fim', '>', $dataHoraFim);
+                            });
+                    })
+                    ->exists();
+
+                if ($conflict) {
+                    $validator->errors()->add('data_hora_inicio', 'O barbeiro já possui agendamento nesse horário.');
+                }
+            }
+        });
     }
 }
