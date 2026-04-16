@@ -5,6 +5,9 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\AgendamentoController;
 use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\AuthController;
+use App\Models\Agendamento;
+use App\Models\Cliente;
+use App\Models\Servico;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -16,7 +19,11 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->na
 
 Route::middleware('auth')->group(function () {
     Route::get('dashboard', function () {
-        return view('dashboard');
+        return view('dashboard', [
+            'clientesCount' => Cliente::count(),
+            'servicosCount' => Servico::count(),
+            'agendamentosCount' => Agendamento::count(),
+        ]);
     })->name('dashboard');
 
     Route::resource('clientes', ClienteController::class);

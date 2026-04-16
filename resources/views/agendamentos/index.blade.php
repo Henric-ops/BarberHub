@@ -1,60 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-semibold">Agendamentos</h1>
-            <p class="text-sm text-slate-600">Gerencie a agenda de clientes e barbeiros.</p>
+    <div class="container py-4">
+        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-4">
+            <div>
+                <h1 class="h2">Agendamentos</h1>
+                <p class="text-muted">Gerencie a agenda de clientes e barbeiros.</p>
+            </div>
+            @if(auth()->user()->isAdministrador())
+                <a href="{{ route('agendamentos.create') }}" class="btn btn-warning btn-lg">Novo Agendamento</a>
+            @endif
         </div>
-        @if(auth()->user()->isAdministrador())
-            <a href="{{ route('agendamentos.create') }}" class="inline-flex items-center rounded bg-[#1b1b18] px-4 py-2 text-white hover:bg-slate-900">Novo Agendamento</a>
-        @endif
-    </div>
 
-    <form method="GET" class="mb-6">
-        <input type="search" name="search" value="{{ request('search') }}" placeholder="Buscar por cliente ou barbeiro"
-            class="w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-    </form>
+        <form method="GET" class="mb-4">
+            <div class="input-group">
+                <input type="search" name="search" value="{{ request('search') }}" placeholder="Buscar por cliente ou barbeiro" class="form-control rounded-start rounded-pill" aria-label="Buscar" />
+                <button class="btn btn-outline-secondary rounded-end rounded-pill" type="submit">Buscar</button>
+            </div>
+        </form>
 
-    <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
-        <table class="min-w-full text-left text-sm text-slate-700">
-            <thead class="bg-slate-50 uppercase text-slate-500">
-                <tr>
-                    <th class="px-4 py-3">Cliente</th>
-                    <th class="px-4 py-3">Barbeiro</th>
-                    <th class="px-4 py-3">Serviço</th>
-                    <th class="px-4 py-3">Início</th>
-                    <th class="px-4 py-3">Fim</th>
-                    <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($agendamentos as $agendamento)
-                    <tr class="border-t border-slate-200">
-                        <td class="px-4 py-3">{{ $agendamento->cliente->nome }}</td>
-                        <td class="px-4 py-3">{{ $agendamento->barbeiro->name }}</td>
-                        <td class="px-4 py-3">{{ $agendamento->servico->nome }}</td>
-                        <td class="px-4 py-3">{{ $agendamento->data_hora_inicio->format('d/m/Y H:i') }}</td>
-                        <td class="px-4 py-3">{{ $agendamento->data_hora_fim->format('d/m/Y H:i') }}</td>
-                        <td class="px-4 py-3 capitalize">{{ $agendamento->status ?? 'agendado' }}</td>
-                        <td class="px-4 py-3 space-x-2">
-                            <a href="{{ route('agendamentos.edit', $agendamento) }}" class="rounded bg-slate-800 px-3 py-1 text-white text-sm">Editar</a>
-                            @if(auth()->user()->isAdministrador())
-                                <form action="{{ route('agendamentos.destroy', $agendamento) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="rounded bg-red-600 px-3 py-1 text-white text-sm">Excluir</button>
-                                </form>
-                            @endif
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="px-4 py-6 text-center text-slate-500">Nenhum agendamento encontrado.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-uppercase text-secondary small">
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Barbeiro</th>
+                            <th>Serviço</th>
+                            <th>Início</th>
+                            <th>Fim</th>
+                            <th>Status</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($agendamentos as $agendamento)
+                            <tr>
+                                <td>{{ $agendamento->cliente->nome }}</td>
+                                <td>{{ $agendamento->barbeiro->name }}</td>
+                                <td>{{ $agendamento->servico->nome }}</td>
+                                <td>{{ $agendamento->data_hora_inicio->format('d/m/Y H:i') }}</td>
+                                <td>{{ $agendamento->data_hora_fim->format('d/m/Y H:i') }}</td>
+                                <td class="text-capitalize">{{ $agendamento->status ?? 'agendado' }}</td>
+                                <td class="text-end">
+                                    <a href="{{ route('agendamentos.edit', $agendamento) }}" class="btn btn-sm btn-outline-dark me-2">Editar</a>
+                                    @if(auth()->user()->isAdministrador())
+                                        <form action="{{ route('agendamentos.destroy', $agendamento) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                        </form>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">Nenhum agendamento encontrado.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection

@@ -1,50 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-2xl mx-auto rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h1 class="text-2xl font-semibold">Novo Cliente</h1>
-                <p class="text-sm text-slate-600">Cadastre um novo cliente para agendamentos.</p>
+    <div class="container py-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-4 gap-3">
+                    <div>
+                        <h1 class="h3">Novo Cliente</h1>
+                        <p class="text-muted mb-0">Cadastre um novo cliente para agendamentos.</p>
+                    </div>
+                    <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary">Voltar</a>
+                </div>
+
+                <form method="POST" action="{{ route('clientes.store') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" name="nome" value="{{ old('nome') }}" required class="form-control form-control-lg rounded-4" />
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Telefone</label>
+                            <input type="text" name="telefone" value="{{ old('telefone') }}" required class="form-control rounded-4" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">CPF</label>
+                            <input type="text" name="cpf" value="{{ old('cpf') }}" required class="form-control rounded-4" />
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">E-mail</label>
+                            <input type="email" name="email" value="{{ old('email') }}" class="form-control rounded-4" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Endereço</label>
+                            <input type="text" name="endereco" value="{{ old('endereco') }}" class="form-control rounded-4" />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark btn-lg rounded-4">Salvar cliente</button>
+                </form>
             </div>
-            <a href="{{ route('clientes.index') }}" class="rounded bg-slate-800 px-4 py-2 text-white">Voltar</a>
         </div>
-
-        <form method="POST" action="{{ route('clientes.store') }}" class="space-y-4">
-            @csrf
-            <div>
-                <label class="block text-sm font-medium text-slate-700">Nome</label>
-                <input type="text" name="nome" value="{{ old('nome') }}" required
-                    class="mt-1 block w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-            </div>
-
-            <div class="grid gap-4 sm:grid-cols-2">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700">Telefone</label>
-                    <input type="text" name="telefone" value="{{ old('telefone') }}" required
-                        class="mt-1 block w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700">CPF</label>
-                    <input type="text" name="cpf" value="{{ old('cpf') }}" required
-                        class="mt-1 block w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-                </div>
-            </div>
-
-            <div class="grid gap-4 sm:grid-cols-2">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700">E-mail</label>
-                    <input type="email" name="email" value="{{ old('email') }}"
-                        class="mt-1 block w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700">Endereço</label>
-                    <input type="text" name="endereco" value="{{ old('endereco') }}"
-                        class="mt-1 block w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-                </div>
-            </div>
-
-            <button type="submit" class="rounded bg-[#1b1b18] px-4 py-2 text-white">Salvar cliente</button>
-        </form>
     </div>
 @endsection

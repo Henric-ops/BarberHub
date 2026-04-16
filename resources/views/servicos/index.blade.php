@@ -1,50 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-semibold">Serviços</h1>
-            <p class="text-sm text-slate-600">Cadastre, edite e remova serviços oferecidos pela barbearia.</p>
+    <div class="container py-4">
+        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-4">
+            <div>
+                <h1 class="h2">Serviços</h1>
+                <p class="text-muted">Cadastre, edite e remova serviços oferecidos pela barbearia.</p>
+            </div>
+            <a href="{{ route('servicos.create') }}" class="btn btn-warning btn-lg">Novo Serviço</a>
         </div>
-        <a href="{{ route('servicos.create') }}" class="inline-flex items-center rounded bg-[#1b1b18] px-4 py-2 text-white hover:bg-slate-900">Novo Serviço</a>
-    </div>
 
-    <form method="GET" class="mb-6">
-        <input type="search" name="search" value="{{ request('search') }}" placeholder="Buscar por nome ou descrição"
-            class="w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-    </form>
+        <form method="GET" class="mb-4">
+            <div class="input-group">
+                <input type="search" name="search" value="{{ request('search') }}" placeholder="Buscar por nome ou descrição" class="form-control rounded-start rounded-pill" aria-label="Buscar" />
+                <button class="btn btn-outline-secondary rounded-end rounded-pill" type="submit">Buscar</button>
+            </div>
+        </form>
 
-    <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
-        <table class="min-w-full text-left text-sm text-slate-700">
-            <thead class="bg-slate-50 uppercase text-slate-500">
-                <tr>
-                    <th class="px-4 py-3">Nome</th>
-                    <th class="px-4 py-3">Preço</th>
-                    <th class="px-4 py-3">Duração (min)</th>
-                    <th class="px-4 py-3">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($servicos as $servico)
-                    <tr class="border-t border-slate-200">
-                        <td class="px-4 py-3">{{ $servico->nome }}</td>
-                        <td class="px-4 py-3">R$ {{ number_format($servico->preco, 2, ',', '.') }}</td>
-                        <td class="px-4 py-3">{{ $servico->duracao_minutos }}</td>
-                        <td class="px-4 py-3 space-x-2">
-                            <a href="{{ route('servicos.edit', $servico) }}" class="rounded bg-slate-800 px-3 py-1 text-white text-sm">Editar</a>
-                            <form action="{{ route('servicos.destroy', $servico) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="rounded bg-red-600 px-3 py-1 text-white text-sm">Excluir</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="px-4 py-6 text-center text-slate-500">Nenhum serviço encontrado.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-uppercase text-secondary small">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Preço</th>
+                            <th>Duração (min)</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($servicos as $servico)
+                            <tr>
+                                <td>{{ $servico->nome }}</td>
+                                <td>R$ {{ number_format($servico->preco, 2, ',', '.') }}</td>
+                                <td>{{ $servico->duracao_minutos }}</td>
+                                <td class="text-end">
+                                    <a href="{{ route('servicos.edit', $servico) }}" class="btn btn-sm btn-outline-dark me-2">Editar</a>
+                                    <form action="{{ route('servicos.destroy', $servico) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">Nenhum serviço encontrado.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection

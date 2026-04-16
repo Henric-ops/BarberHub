@@ -1,43 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-2xl mx-auto rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h1 class="text-2xl font-semibold">Novo Serviço</h1>
-                <p class="text-sm text-slate-600">Cadastre um novo serviço para venda na barbearia.</p>
+    <div class="container py-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-4 gap-3">
+                    <div>
+                        <h1 class="h3">Novo Serviço</h1>
+                        <p class="text-muted mb-0">Cadastre um novo serviço para venda na barbearia.</p>
+                    </div>
+                    <a href="{{ route('servicos.index') }}" class="btn btn-outline-secondary">Voltar</a>
+                </div>
+
+                <form method="POST" action="{{ route('servicos.store') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" name="nome" value="{{ old('nome') }}" required class="form-control form-control-lg rounded-4" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descrição</label>
+                        <textarea name="descricao" rows="3" class="form-control rounded-4">{{ old('descricao') }}</textarea>
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Preço</label>
+                            <input type="number" step="0.01" name="preco" value="{{ old('preco') }}" required class="form-control rounded-4" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Duração (minutos)</label>
+                            <input type="number" name="duracao_minutos" value="{{ old('duracao_minutos') }}" required class="form-control rounded-4" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-lg rounded-4">Salvar serviço</button>
+                </form>
             </div>
-            <a href="{{ route('servicos.index') }}" class="rounded bg-slate-800 px-4 py-2 text-white">Voltar</a>
         </div>
-
-        <form method="POST" action="{{ route('servicos.store') }}" class="space-y-4">
-            @csrf
-            <div>
-                <label class="block text-sm font-medium text-slate-700">Nome</label>
-                <input type="text" name="nome" value="{{ old('nome') }}" required
-                    class="mt-1 block w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-slate-700">Descrição</label>
-                <textarea name="descricao" rows="3"
-                    class="mt-1 block w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">{{ old('descricao') }}</textarea>
-            </div>
-
-            <div class="grid gap-4 sm:grid-cols-2">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700">Preço</label>
-                    <input type="number" step="0.01" name="preco" value="{{ old('preco') }}" required
-                        class="mt-1 block w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700">Duração (minutos)</label>
-                    <input type="number" name="duracao_minutos" value="{{ old('duracao_minutos') }}" required
-                        class="mt-1 block w-full rounded border border-slate-300 px-4 py-2 focus:border-slate-500 focus:ring-slate-500">
-                </div>
-            </div>
-
-            <button type="submit" class="rounded bg-[#1b1b18] px-4 py-2 text-white">Salvar serviço</button>
-        </form>
     </div>
 @endsection
