@@ -1,125 +1,136 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
-        <section class="space-y-6">
-            <div class="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-[0_50px_120px_rgba(15,23,42,0.45)]">
-                <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                    <div>
-                        <p class="text-sm uppercase tracking-[0.25em] text-slate-400">Olá, {{ auth()->user()->name }}</p>
-                        <h1 class="mt-3 text-3xl font-semibold text-white">Painel principal</h1>
-                        <p class="mt-2 max-w-2xl text-slate-400">Acompanhe os últimos dados da barbearia com um visual leve, moderno e organizado.</p>
-                    </div>
-                    <div class="inline-flex items-center gap-2 rounded-3xl bg-white/5 px-5 py-3 text-sm text-slate-200 shadow-inner shadow-white/5">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 text-slate-950">!</span>
-                        Atualizado agora
-                    </div>
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="page-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                <div>
+                    <h2 class="page-title mb-1">Olá, {{ auth()->user()->name }}</h2>
+                    <p class="page-description mb-0">Visão clara da barbearia com métricas e ações prioritárias.</p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ route('agendamentos.create') }}" class="btn btn-primary">Novo agendamento</a>
+                    <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary">Ver clientes</a>
                 </div>
             </div>
+        </div>
 
-            <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                <div class="rounded-[2rem] bg-gradient-to-br from-slate-900 to-slate-800 p-6 shadow-[0_30px_60px_rgba(15,23,42,0.35)]">
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm uppercase tracking-[0.24em] text-slate-400">Agendamentos</span>
-                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-500/15 text-cyan-300">
-                            <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M4 4h16M4 8h16M7 13h10M7 17h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                        </span>
-                    </div>
-                    <p class="mt-8 text-4xl font-semibold text-white">{{ $agendamentosCount }}</p>
-                    <p class="mt-2 text-sm text-slate-400">Total de agendamentos registrados.</p>
-                </div>
+        <div class="col-12 col-xl-7">
+            <div class="panel panel-hero p-5">
+                <span class="badge bg-white text-primary rounded-pill mb-3">Painel</span>
+                <h1 class="text-white mb-3">Gestão inteligente para sua barbearia</h1>
+                <p class="text-white-75 mb-4">Acompanhe agendamentos, clientes e serviços com uma experiência limpa, leve e focada em ação.</p>
 
-                <div class="rounded-[2rem] bg-gradient-to-br from-slate-900 to-slate-800 p-6 shadow-[0_30px_60px_rgba(15,23,42,0.35)]">
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm uppercase tracking-[0.24em] text-slate-400">Clientes</span>
-                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-300">
-                            <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6 9a6 6 0 0 1 12 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </span>
-                    </div>
-                    <p class="mt-8 text-4xl font-semibold text-white">{{ $clientesCount }}</p>
-                    <p class="mt-2 text-sm text-slate-400">Clientes cadastrados no sistema.</p>
-                </div>
-
-                <div class="rounded-[2rem] bg-gradient-to-br from-slate-900 to-slate-800 p-6 shadow-[0_30px_60px_rgba(15,23,42,0.35)]">
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm uppercase tracking-[0.24em] text-slate-400">Serviços</span>
-                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-pink-500/15 text-pink-300">
-                            <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                        </span>
-                    </div>
-                    <p class="mt-8 text-4xl font-semibold text-white">{{ $servicosCount }}</p>
-                    <p class="mt-2 text-sm text-slate-400">Serviços disponíveis para agendamento.</p>
-                </div>
-            </div>
-
-            <div class="rounded-[2rem] border border-white/10 bg-slate-900/80 p-6 shadow-[0_40px_80px_rgba(15,23,42,0.25)]">
-                <div class="flex items-center justify-between gap-4">
-                    <div>
-                        <h2 class="text-xl font-semibold text-white">Visão geral</h2>
-                        <p class="mt-2 text-sm text-slate-400">Acompanhe os dados mais importantes do seu negócio.</p>
-                    </div>
-                    <span class="inline-flex rounded-full bg-slate-800 px-3 py-1 text-xs uppercase tracking-[0.24em] text-slate-300">Resumo</span>
-                </div>
-                <div class="mt-6 grid gap-4 sm:grid-cols-3">
-                    <div class="rounded-3xl border border-white/10 bg-slate-950/80 p-5 text-slate-100">
-                        <p class="text-sm text-slate-400">Atendimento ativo</p>
-                        <p class="mt-4 text-2xl font-semibold">3</p>
-                    </div>
-                    <div class="rounded-3xl border border-white/10 bg-slate-950/80 p-5 text-slate-100">
-                        <p class="text-sm text-slate-400">Faturamento atual</p>
-                        <p class="mt-4 text-2xl font-semibold">R$ 1.717,98</p>
-                    </div>
-                    <div class="rounded-3xl border border-white/10 bg-slate-950/80 p-5 text-slate-100">
-                        <p class="text-sm text-slate-400">Agenda liberada</p>
-                        <p class="mt-4 text-2xl font-semibold">Sim</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <aside class="space-y-6">
-            <div class="rounded-[2rem] border border-white/10 bg-slate-900/80 p-6 shadow-[0_30px_60px_rgba(15,23,42,0.35)]">
-                <div class="flex items-center justify-between gap-4">
-                    <div>
-                        <p class="text-sm uppercase tracking-[0.25em] text-slate-400">Serviços mais realizados</p>
-                        <h2 class="mt-3 text-xl font-semibold text-white">Ranking</h2>
-                    </div>
-                    <span class="rounded-full bg-slate-800 px-3 py-1 text-xs uppercase tracking-[0.24em] text-slate-300">Mês</span>
-                </div>
-
-                <div class="mt-6 space-y-5">
-                    <div>
-                        <div class="flex items-center justify-between text-sm text-slate-300">
-                            <span>Corte de Cabelo</span>
-                            <span>R$ 200,00</span>
-                        </div>
-                        <div class="mt-3 h-2 overflow-hidden rounded-full bg-white/5">
-                            <div class="h-full w-4/5 rounded-full bg-amber-500"></div>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="rounded-4 bg-white bg-opacity-15 p-3">
+                            <p class="text-white-75 mb-1 small">Agendamentos</p>
+                            <h3 class="text-white mb-0">{{ $agendamentosCount }}</h3>
                         </div>
                     </div>
-                    <div>
-                        <div class="flex items-center justify-between text-sm text-slate-300">
-                            <span>Limpeza de Barba</span>
-                            <span>R$ 45,00</span>
-                        </div>
-                        <div class="mt-3 h-2 overflow-hidden rounded-full bg-white/5">
-                            <div class="h-full w-2/5 rounded-full bg-cyan-400"></div>
+                    <div class="col-6">
+                        <div class="rounded-4 bg-white bg-opacity-15 p-3">
+                            <p class="text-white-75 mb-1 small">Clientes</p>
+                            <h3 class="text-white mb-0">{{ $clientesCount }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="rounded-[2rem] border border-white/10 bg-slate-900/80 p-6 shadow-[0_30px_60px_rgba(15,23,42,0.35)]">
-                <p class="text-sm uppercase tracking-[0.25em] text-slate-400">Link rápido</p>
-                <h2 class="mt-3 text-xl font-semibold text-white">Ações</h2>
-                <div class="mt-6 space-y-3">
-                    <a href="{{ route('agendamentos.create') }}" class="flex items-center justify-between rounded-3xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-4 text-sm font-semibold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:brightness-110">
-                        <span>Novo agendamento</span>
-                        <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                    </a>
-                    <a href="{{ route('clientes.index') }}" class="block rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-4 text-sm text-slate-200 transition hover:border-slate-300/40 hover:bg-slate-900">Gerenciar clientes</a>
+        <div class="col-12 col-xl-5">
+            <div class="row g-4">
+                <div class="col-12 col-sm-4">
+                    <div class="panel p-4 text-center">
+                        <p class="text-uppercase text-muted small mb-2">Agenda</p>
+                        <h3 class="mb-0">{{ $agendamentosCount }}</h3>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <div class="panel p-4 text-center">
+                        <p class="text-uppercase text-muted small mb-2">Clientes</p>
+                        <h3 class="mb-0">{{ $clientesCount }}</h3>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <div class="panel p-4 text-center">
+                        <p class="text-uppercase text-muted small mb-2">Serviços</p>
+                        <h3 class="mb-0">{{ $servicosCount }}</h3>
+                    </div>
                 </div>
             </div>
-        </aside>
+        </div>
+
+        <div class="col-12 col-lg-7">
+            <div class="panel p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div>
+                        <h3 class="h5 mb-1">Visão geral</h3>
+                        <p class="text-muted mb-0">Resumo rápido dos principais indicadores.</p>
+                    </div>
+                    <span class="badge btn-secondary py-2 px-3">Atual</span>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="rounded-4 border border-1 border-[#E5E7EB] p-3">
+                            <p class="text-muted mb-2 small">Agenda ativa</p>
+                            <h4 class="mb-1">8</h4>
+                            <span class="text-success">+12% último mês</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="rounded-4 border border-1 border-[#E5E7EB] p-3">
+                            <p class="text-muted mb-2 small">Faturamento</p>
+                            <h4 class="mb-1">R$ 1.717,98</h4>
+                            <span class="text-success">+7% crescimento</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="rounded-4 border border-1 border-[#E5E7EB] p-3">
+                            <p class="text-muted mb-2 small">Capacidade</p>
+                            <h4 class="mb-1">Sim</h4>
+                            <span class="text-success">Agenda fluindo</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="rounded-4 border border-1 border-[#E5E7EB] p-3">
+                            <p class="text-muted mb-2 small">Ações pendentes</p>
+                            <h4 class="mb-1">3</h4>
+                            <span class="text-danger">Revisar hoje</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <div class="panel p-4 h-100">
+                <h3 class="h5 mb-3">Ações rápidas</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-4 mb-2">
+                        <div>
+                            <p class="mb-1 text-muted small">Clientes novos</p>
+                            <strong>4 cadastros</strong>
+                        </div>
+                        <span class="badge bg-secondary rounded-pill">Hoje</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-4 mb-2">
+                        <div>
+                            <p class="mb-1 text-muted small">Serviços adicionados</p>
+                            <strong>2</strong>
+                        </div>
+                        <span class="badge bg-secondary rounded-pill">Semana</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-4">
+                        <div>
+                            <p class="mb-1 text-muted small">Aguardando confirmação</p>
+                            <strong>1</strong>
+                        </div>
+                        <span class="badge bg-secondary rounded-pill">Urgente</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 @endsection

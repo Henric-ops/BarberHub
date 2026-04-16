@@ -1,21 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-2xl mx-auto rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h1 class="text-2xl font-semibold">Cliente</h1>
-                <p class="text-sm text-slate-600">Visualize os dados do cliente.</p>
+    <div class="container-fluid py-4">
+        <div class="panel p-4 shadow-sm mx-auto" style="max-width: 42rem;">
+            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-4">
+                <div>
+                    <h1 class="h3 mb-1">Cliente</h1>
+                    <p class="text-muted mb-0">Visualize os dados do cliente.</p>
+                </div>
+                <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary">Voltar</a>
             </div>
-            <a href="{{ route('clientes.index') }}" class="rounded bg-slate-800 px-4 py-2 text-white">Voltar</a>
-        </div>
 
-        <div class="space-y-4 text-slate-700">
-            <p><strong>Nome:</strong> {{ $cliente->nome }}</p>
-            <p><strong>Telefone:</strong> {{ $cliente->telefone }}</p>
-            <p><strong>CPF:</strong> {{ $cliente->cpf }}</p>
-            <p><strong>E-mail:</strong> {{ $cliente->email }}</p>
-            <p><strong>Endereço:</strong> {{ $cliente->endereco }}</p>
+            <div class="row g-3 text-dark">
+                <div class="col-12"><strong>Nome:</strong> {{ $cliente->nome }}</div>
+                <div class="col-md-6"><strong>Telefone:</strong> {{ $cliente->telefone }}</div>
+                <div class="col-md-6"><strong>CPF:</strong> {{ $cliente->cpf }}</div>
+                <div class="col-md-6"><strong>E-mail:</strong> {{ $cliente->email }}</div>
+                <div class="col-md-6"><strong>Endereço:</strong> {{ $cliente->endereco }}</div>
+            </div>
         </div>
     </div>
 @endsection

@@ -11,111 +11,97 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @endif
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen">
+<body class="min-vh-100">
     @auth
-        <div class="lg:flex lg:min-h-screen">
-            <aside class="w-full lg:w-80 bg-[#111827] border-r border-white/10 text-slate-100 flex flex-col">
-                <div class="px-6 py-5 border-b border-white/10">
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 text-slate-950 shadow-lg shadow-amber-500/20">B</span>
-                        <div>
-                            <span class="block text-lg font-semibold">BarberHub</span>
-                            <span class="block text-xs text-slate-400">Painel administrativo</span>
-                        </div>
-                    </a>
-                </div>
+        @php $current = Route::currentRouteName(); @endphp
 
-                <nav class="flex-1 px-4 py-6 space-y-2">
-                    @php
-                        $current = Route::currentRouteName();
-                    @endphp
+        <div class="d-flex min-vh-100">
+            <aside class="sidebar d-flex flex-column p-4">
+                <a href="{{ route('dashboard') }}" class="d-flex align-items-center text-decoration-none mb-5">
+                    <div class="brand-badge me-3">B</div>
+                    <div>
+                        <h2 class="h5 mb-1 text-dark">BarberHub</h2>
+                        <p class="text-muted small mb-0">Painel de gestão</p>
+                    </div>
+                </a>
 
-                    <a href="{{ route('dashboard') }}" class="group flex items-center gap-3 rounded-2xl px-4 py-3 transition hover:bg-white/5 {{ $current === 'dashboard' ? 'bg-white/10' : 'bg-transparent' }}">
-                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-800 text-amber-400 group-hover:bg-amber-500/15">
-                            <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M3 13h8V3H3v10Zm0 8h8v-6H3v6Zm10 0h8v-10h-8v10Zm0-18v6h8V3h-8Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <nav class="nav nav-pills flex-column gap-2">
+                    <a href="{{ route('dashboard') }}" class="nav-link d-flex align-items-center gap-2 {{ $current === 'dashboard' ? 'active' : '' }}">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 36px; height: 36px; background: rgba(37, 99, 235, 0.08);">
+                            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-primary"><path d="M3 13h8V3H3v10Zm0 8h8v-6H3v6Zm10 0h8v-10h-8v10Zm0-18v6h8V3h-8Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </span>
-                        <span class="text-sm font-medium text-slate-100">Dashboard</span>
+                        Dashboard
                     </a>
 
-                    <a href="{{ route('agendamentos.index') }}" class="group flex items-center gap-3 rounded-2xl px-4 py-3 transition hover:bg-white/5 {{ str_starts_with($current, 'agendamentos') ? 'bg-white/10' : 'bg-transparent' }}">
-                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-800 text-cyan-400 group-hover:bg-cyan-500/15">
-                            <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M4 4h16M4 8h16M7 13h10M7 17h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    <a href="{{ route('agendamentos.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'agendamentos') ? 'active' : '' }}">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 36px; height: 36px; background: rgba(37, 99, 235, 0.08);">
+                            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-primary"><path d="M4 4h16M4 8h16M7 13h10M7 17h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                         </span>
-                        <span class="text-sm font-medium text-slate-100">Agendamentos</span>
+                        Agendamentos
                     </a>
 
-                    <a href="{{ route('clientes.index') }}" class="group flex items-center gap-3 rounded-2xl px-4 py-3 transition hover:bg-white/5 {{ str_starts_with($current, 'clientes') ? 'bg-white/10' : 'bg-transparent' }}">
-                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-800 text-emerald-400 group-hover:bg-emerald-500/15">
-                            <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6 9a6 6 0 0 1 12 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <a href="{{ route('clientes.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'clientes') ? 'active' : '' }}">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 36px; height: 36px; background: rgba(16, 185, 129, 0.12);">
+                            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-success"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6 9a6 6 0 0 1 12 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </span>
-                        <span class="text-sm font-medium text-slate-100">Clientes</span>
+                        Clientes
                     </a>
 
-                    <a href="{{ route('servicos.index') }}" class="group flex items-center gap-3 rounded-2xl px-4 py-3 transition hover:bg-white/5 {{ str_starts_with($current, 'servicos') ? 'bg-white/10' : 'bg-transparent' }}">
-                        <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-800 text-pink-400 group-hover:bg-pink-500/15">
-                            <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                    <a href="{{ route('servicos.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'servicos') ? 'active' : '' }}">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 36px; height: 36px; background: rgba(37, 99, 235, 0.08);">
+                            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-primary"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                         </span>
-                        <span class="text-sm font-medium text-slate-100">Serviços</span>
+                        Serviços
                     </a>
                 </nav>
 
-                <div class="px-4 pb-6 pt-4 border-t border-white/10">
-                    <div class="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.12)]">
-                        <div class="flex items-center gap-3">
-                            <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 text-slate-950 flex items-center justify-center font-semibold">{{ strtoupper(substr(auth()->user()->name,0,1)) }}</div>
-                            <div>
-                                <p class="text-sm font-semibold">{{ auth()->user()->name }}</p>
-                                <p class="text-xs text-slate-400 capitalize">{{ auth()->user()->cargo }}</p>
-                            </div>
-                        </div>
-                        <div class="mt-4 flex gap-2">
-                            <form method="POST" action="{{ route('logout') }}" class="w-full">
-                                @csrf
-                                <button type="submit" class="w-full rounded-2xl bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-amber-400">Sair</button>
-                            </form>
-                        </div>
+                <div class="mt-auto pt-4">
+                    <div class="panel p-4 mb-3">
+                        <p class="text-uppercase small text-muted mb-2">Resumo rápido</p>
+                        <p class="mb-0">Mantenha a barbearia organizada com navegação direta e controle visual.</p>
                     </div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-secondary w-100">Sair</button>
+                    </form>
                 </div>
             </aside>
 
-            <main class="flex-1 bg-slate-950 text-slate-100">
-                <div class="border-b border-white/10 bg-slate-950/95 backdrop-blur-xl sticky top-0 z-20">
-                    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <div>
-                            <h1 class="text-xl font-semibold tracking-tight">{{ $title ?? 'Visão geral' }}</h1>
-                            <p class="text-sm text-slate-400">Um painel limpo para acompanhar sua barbearia com estilo.</p>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-3">
-                            <div class="inline-flex items-center gap-2 rounded-2xl bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-sm">
-                                <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4 text-amber-300"><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                <span>Atualizado agora</span>
-                            </div>
-                        </div>
+            <div class="flex-grow-1 d-flex flex-column">
+                <header class="topbar px-4 py-3 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                    <div>
+                        <h1 class="h5 mb-1">{{ $title ?? 'Visão geral' }}</h1>
+                        <p class="text-muted mb-0">Controle os agendamentos, clientes e serviços em um só lugar.</p>
                     </div>
-                </div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ route('agendamentos.create') }}" class="btn btn-primary btn-sm rounded-pill">Novo agendamento</a>
+                        <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill">Clientes</a>
+                    </div>
+                </header>
 
-                <div class="max-w-7xl mx-auto px-4 py-8">
+                <main class="p-4 p-xl-5">
                     @if (session('success'))
-                        <div class="mb-6 rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-emerald-100 shadow-sm">
+                        <div class="alert alert-success border-0 rounded-4 shadow-sm">
                             {{ session('success') }}
                         </div>
                     @endif
                     @if ($errors->any())
-                        <div class="mb-6 rounded-3xl border border-red-500/20 bg-red-500/10 p-4 text-red-100 shadow-sm">
-                            <ul class="list-disc list-inside">
+                        <div class="alert alert-danger border-0 rounded-4 shadow-sm">
+                            <ul class="mb-0">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
                         </div>
                     @endif
+
                     @yield('content')
-                </div>
-            </main>
+                </main>
+            </div>
         </div>
     @else
-        <main class="min-h-screen bg-slate-950 flex items-center justify-center px-4 py-10">
-            <div class="w-full max-w-4xl">
+        <main class="min-vh-100 d-flex align-items-center justify-content-center p-4" style="background: var(--color-background);">
+            <div class="w-100" style="max-width: 1100px;">
                 @yield('content')
             </div>
         </main>

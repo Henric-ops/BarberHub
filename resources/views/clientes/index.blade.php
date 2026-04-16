@@ -1,26 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container py-4">
+    <div class="container-fluid py-4">
         <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-4">
             <div>
-                <h1 class="h2">Clientes</h1>
-                <p class="text-muted">Gerencie os cadastros de clientes e filtre por nome ou telefone.</p>
+                <h1 class="h2 mb-1">Clientes</h1>
+                <p class="text-muted mb-0">Gerencie os cadastros de clientes e encontre informações rapidamente.</p>
             </div>
-            <a href="{{ route('clientes.create') }}" class="btn btn-warning btn-lg">Novo Cliente</a>
+            <a href="{{ route('clientes.create') }}" class="btn btn-secondary btn-lg rounded-pill">Novo Cliente</a>
         </div>
 
         <form method="GET" class="mb-4">
-            <div class="input-group">
-                <input type="search" name="search" value="{{ request('search') }}" placeholder="Buscar por nome ou telefone" class="form-control rounded-start rounded-pill" aria-label="Buscar" />
-                <button class="btn btn-outline-secondary rounded-end rounded-pill" type="submit">Buscar</button>
+            <div class="input-group shadow-sm rounded-pill overflow-hidden border" style="border-color: var(--color-border);">
+                <input type="search" name="search" value="{{ request('search') }}" placeholder="Buscar por nome ou telefone" class="form-control" aria-label="Buscar">
+                <button class="btn btn-primary px-4" type="submit">Buscar</button>
             </div>
         </form>
 
-        <div class="card shadow-sm">
+        <div class="custom-table-card overflow-hidden">
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light text-uppercase text-secondary small">
+                <table class="table table-hover mb-0">
+                    <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Telefone</th>
@@ -37,11 +37,11 @@
                                 <td>{{ $cliente->cpf }}</td>
                                 <td>{{ $cliente->email }}</td>
                                 <td class="text-end">
-                                    <a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-sm btn-outline-dark me-2">Editar</a>
+                                    <a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-sm btn-outline-secondary me-2">Editar</a>
                                     <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                        <button type="submit" class="btn btn-sm btn-dark">Excluir</button>
                                     </form>
                                 </td>
                             </tr>
