@@ -21,6 +21,21 @@ class UpdateAgendamentoRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
+    public function prepareForValidation()
+    {
+        // Converter formato do datetime-local (YYYY-MM-DDTHH:mm) para Y-m-d H:i
+        if ($this->filled('data_hora_inicio')) {
+            $this->merge([
+                'data_hora_inicio' => str_replace('T', ' ', $this->data_hora_inicio),
+            ]);
+        }
+        if ($this->filled('data_hora_fim')) {
+            $this->merge([
+                'data_hora_fim' => str_replace('T', ' ', $this->data_hora_fim),
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -28,7 +43,7 @@ class UpdateAgendamentoRequest extends FormRequest
             'barbeiro_id' => 'nullable|exists:users,id',
             'servico_id' => 'nullable|exists:servicos,id',
             'data_hora_inicio' => 'nullable|date_format:Y-m-d H:i',
-            'data_hora_fim' => 'nullable|date_format:Y-m-d H:i|after:data_hora_inicio',
+            'data_hora_fim' => 'nullable|date_format:Y-m-d H:i|after_or_equal:data_hora_inicio',
             'status' => 'nullable|in:agendado,concluido,cancelado',
         ];
     }

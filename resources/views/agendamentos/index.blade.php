@@ -12,47 +12,48 @@
         @endif
 
         {{-- HEADER --}}
-        <div
-            class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 mb-4">
-            <div>
-                <h1 class="h2 mb-1 d-flex align-items-center gap-2">
-                    <i class="fas fa-calendar-alt text-primary"></i>
+        <div class="page-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+            <div class="slide-in-left">
+                <h2 class="page-title d-flex align-items-center gap-2">
+                    <span class="d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.15); border-radius: 10px;">
+                        <i class="fas fa-calendar-alt text-primary"></i>
+                    </span>
                     Agendamentos
-                </h1>
-                <p class="text-muted mb-0">
+                </h2>
+                <p class="page-description">
                     Gerencie a agenda de clientes e barbeiros de forma simples e eficiente.
                 </p>
             </div>
 
             @if(auth()->user()->isAdministrador())
-                <a href="{{ route('agendamentos.create') }}" class="btn btn-primary btn-lg rounded-pill shadow-sm">
-                    <i class="fas fa-plus me-2"></i> Novo agendamento
+                <a href="{{ route('agendamentos.create') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus"></i> Novo agendamento
                 </a>
             @endif
         </div>
 
         {{-- BUSCA --}}
-        <form method="GET" class="mb-4">
-            <div class="input-group shadow-sm rounded-pill overflow-hidden border">
-                <span class="input-group-text bg-white border-0">
-                    <i class="fas fa-search text-muted"></i>
+        <form method="GET" class="mb-4 fade-in delay-200">
+            <div class="input-group shadow-sm rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+                <span class="input-group-text bg-white border-0" style="color: var(--color-text-muted);">
+                    <i class="fas fa-search"></i>
                 </span>
                 <input type="search" name="search" value="{{ request('search') }}"
                     placeholder="Buscar por cliente ou barbeiro..." class="form-control border-0">
                 <button class="btn btn-primary px-4" type="submit">
-                    Buscar
+                    <i class="fas fa-search"></i> Buscar
                 </button>
             </div>
         </form>
 
         <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 
-            <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                <strong class="d-flex align-items-center gap-2">
-                    <i class="fas fa-list text-primary"></i>
+            <div class="p-4 border-bottom d-flex justify-content-between align-items-center" style="background: var(--color-background-alt);">
+                <strong class="d-flex align-items-center gap-2" style="color: var(--color-primary);">
+                    <i class="fas fa-list"></i>
                     Lista de agendamentos
                 </strong>
-                <span class="text-muted small">{{ $agendamentos->count() }} registros</span>
+                <span class="badge badge-primary">{{ $agendamentos->count() }} registros</span>
             </div>
 
             <div class="table-responsive">
@@ -96,21 +97,24 @@
                                     </span>
                                 </td>
 
-                                <td class="text-end">
-
-                                    <a href="{{ route('agendamentos.edit', $agendamento) }}" class="btn btn-sm btn-light me-2">
-                                        <i class="fas fa-pen"></i>
+                                <td class="text-end d-flex gap-2 justify-content-end">
+                                    <a href="{{ route('agendamentos.edit', $agendamento) }}" class="btn btn-sm btn-outline-primary" title="Editar agendamento">
+                                        <i class="fas fa-edit"></i> 
+                                        @if(auth()->user()->isAdministrador())
+                                            Editar
+                                        @else
+                                            Atualizar Status
+                                        @endif
                                     </a>
-
-                                    <form action="{{ route('agendamentos.destroy', $agendamento) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-light text-danger">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-
+                                    @if(auth()->user()->isAdministrador())
+                                        <form action="{{ route('agendamentos.destroy', $agendamento) }}" method="POST" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir este agendamento?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Excluir agendamento">
+                                                <i class="fas fa-trash"></i> Excluir
+                                            </button>
+                                        </form>
+                                    @endif
                                 </td>
 
                             </tr>

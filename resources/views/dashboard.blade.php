@@ -13,27 +13,38 @@
                     Olá, {{ auth()->user()->name }}
                 </h2>
                 <p class="page-description mb-0">
-                    Visão geral da sua barbearia com métricas e ações rápidas.
+                    @if(auth()->user()->isAdministrador())
+                        Visão geral da sua barbearia com métricas e ações rápidas.
+                    @else
+                        Seu painel de agendamentos e informações.
+                    @endif
                 </p>
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-                <a href="{{ route('agendamentos.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus me-2"></i> Novo agendamento
-                </a>
-                <a href="{{ route('clientes.index') }}" class="btn btn-outline-primary">
-                    <i class="fas fa-users me-2"></i> Clientes
-                </a>
+                @if(auth()->user()->isAdministrador())
+                    <a href="{{ route('agendamentos.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Novo agendamento
+                    </a>
+                    <a href="{{ route('clientes.index') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-users"></i> Clientes
+                    </a>
+                @else
+                    <a href="{{ route('agendamentos.index') }}" class="btn btn-primary">
+                        <i class="fas fa-calendar"></i> Meus agendamentos
+                    </a>
+                @endif
             </div>
         </div>
     </div>
 
-    {{-- HERO --}}
+    {{-- DASHBOARD ADMINISTRADOR --}}
+    @if(auth()->user()->isAdministrador())
     <div class="col-12 col-xl-7">
         <div class="panel panel-hero p-5">
             
-            <span class="badge bg-white text-primary rounded-pill mb-3">
-                <i class="fas fa-star me-1"></i> Painel
+            <span class="badge badge-primary mb-3">
+                <i class="fas fa-star"></i> Painel
             </span>
 
             <h1 class="text-white mb-3">
@@ -74,28 +85,46 @@
         <div class="row g-4">
 
             <div class="col-12 col-sm-4">
-                <div class="panel p-4 text-center">
-                    <i class="fas fa-calendar fa-lg text-primary mb-2"></i>
+                <div class="panel p-4 text-center transition-all">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-lg mb-3" style="width: 50px; height: 50px; background: rgba(37, 99, 235, 0.15);">
+                        <i class="fas fa-calendar fa-lg text-primary"></i>
+                    </div>
                     <p class="text-uppercase text-muted small mb-1">Agenda</p>
-                    <h3 class="mb-0">{{ $agendamentosCount }}</h3>
+                    <h3 class="mb-0" style="color: var(--color-primary);">{{ $agendamentosCount }}</h3>
                 </div>
             </div>
 
             <div class="col-12 col-sm-4">
-                <div class="panel p-4 text-center">
-                    <i class="fas fa-users fa-lg text-primary mb-2"></i>
+                <div class="panel p-4 text-center transition-all">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-lg mb-3" style="width: 50px; height: 50px; background: rgba(5, 150, 105, 0.15);">
+                        <i class="fas fa-users fa-lg" style="color: var(--color-secondary);"></i>
+                    </div>
                     <p class="text-uppercase text-muted small mb-1">Clientes</p>
-                    <h3 class="mb-0">{{ $clientesCount }}</h3>
+                    <h3 class="mb-0" style="color: var(--color-secondary);">{{ $clientesCount }}</h3>
                 </div>
             </div>
 
             <div class="col-12 col-sm-4">
-                <div class="panel p-4 text-center">
-                    <i class="fas fa-scissors fa-lg text-primary mb-2"></i>
+                <div class="panel p-4 text-center transition-all">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-lg mb-3" style="width: 50px; height: 50px; background: rgba(249, 115, 22, 0.15);">
+                        <i class="fas fa-scissors fa-lg" style="color: var(--color-warning);"></i>
+                    </div>
                     <p class="text-uppercase text-muted small mb-1">Serviços</p>
-                    <h3 class="mb-0">{{ $servicosCount }}</h3>
+                    <h3 class="mb-0" style="color: var(--color-warning);">{{ $servicosCount }}</h3>
                 </div>
             </div>
+
+            @if(auth()->user()->isAdministrador())
+                <div class="col-12 col-sm-4">
+                    <div class="panel p-4 text-center transition-all">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-lg mb-3" style="width: 50px; height: 50px; background: rgba(37, 99, 235, 0.15);">
+                            <i class="fas fa-user-tie fa-lg text-primary"></i>
+                        </div>
+                        <p class="text-uppercase text-muted small mb-1">Barbeiros</p>
+                        <h3 class="mb-0" style="color: var(--color-primary);">{{ $barbeirosCount ?? 0 }}</h3>
+                    </div>
+                </div>
+            @endif
 
         </div>
     </div>
@@ -207,6 +236,94 @@
 
         </div>
     </div>
+
+    {{-- FIM DO DASHBOARD ADMINISTRADOR --}}
+    @else
+
+    {{-- DASHBOARD BARBEIRO --}}
+    <div class="col-12 col-lg-8">
+        <div class="panel p-5">
+            
+            <span class="badge badge-primary mb-3">
+                <i class="fas fa-calendar"></i> Meus agendamentos
+            </span>
+
+            <h2 class="mb-3">Próximos agendamentos</h2>
+
+            <p class="text-muted mb-4">
+                Visualize todos os seus agendamentos programados.
+            </p>
+
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="rounded-4 border p-4 d-flex align-items-center gap-3">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-lg" style="width: 60px; height: 60px; background: rgba(37, 99, 235, 0.15);">
+                            <i class="fas fa-calendar fa-xl text-primary"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted mb-1 small">Total de agendamentos</p>
+                            <h3 class="mb-0">{{ $agendamentosCount ?? 0 }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a href="{{ route('agendamentos.index') }}" class="btn btn-primary w-100">
+                    <i class="fas fa-calendar"></i> Ver todos os agendamentos
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {{-- AÇÕES RÁPIDAS BARBEIRO --}}
+    <div class="col-12 col-lg-4">
+        <div class="panel p-4 h-100">
+
+            <h3 class="h5 mb-3">
+                <i class="fas fa-bolt me-2 text-primary"></i>
+                Ações rápidas
+            </h3>
+
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-4 mb-2">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="fas fa-calendar-plus text-primary"></i>
+                        <div>
+                            <p class="mb-1 text-muted small">Agendar serviço</p>
+                            <strong>Novo agendamento</strong>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="list-group-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-4 mb-2">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="fas fa-user text-primary"></i>
+                        <div>
+                            <p class="mb-1 text-muted small">Perfil</p>
+                            <strong>Ver informações</strong>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="list-group-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="fas fa-sign-out-alt text-danger"></i>
+                        <div>
+                            <p class="mb-1 text-muted small">Sessão</p>
+                            <strong>Logout</strong>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+    {{-- FIM DO DASHBOARD BARBEIRO --}}
+    @endif
 
 </div>
 @endsection

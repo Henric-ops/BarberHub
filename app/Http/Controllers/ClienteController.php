@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            abort_unless(auth()->user()->isAdministrador(), 403);
+            return $next($request);
+        });
+    }
+
     public function index(Request $request)
     {
         $query = Cliente::query();

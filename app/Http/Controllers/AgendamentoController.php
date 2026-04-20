@@ -65,24 +65,29 @@ class AgendamentoController extends Controller
     public function edit(Agendamento $agendamento)
     {
         if (Auth::user()->isAdministrador()) {
+            // Admin acessa todos os agendamentos para editar tudo
             $clientes = Cliente::all();
             $servicos = Servico::all();
             $barbeiros = User::where('cargo', 'barbeiro')->get();
             return view('agendamentos.edit', compact('agendamento', 'clientes', 'servicos', 'barbeiros'));
+        } else {
+            // Barbeiro só pode editar seu próprio agendamento (apenas status)
+            abort_unless(Auth::id() === $agendamento->barbeiro_id, 403);
+            return view('agendamentos.edit', compact('agendamento'));
         }
-
-        abort_unless(Auth::id() === $agendamento->barbeiro_id, 403);
-        return view('agendamentos.edit', compact('agendamento'));
     }
 
     public function update(UpdateAgendamentoRequest $request, Agendamento $agendamento)
     {
+        // Admin atualiza qualquer coisa
         if (Auth::user()->isAdministrador()) {
             $agendamento->update($request->validated());
             return redirect()->route('agendamentos.index')->with('success', 'Agendamento atualizado com sucesso.');
         }
 
+        // Barbeiro só pode atualizar status do seu próprio agendamento
         abort_unless(Auth::id() === $agendamento->barbeiro_id, 403);
+        
         $validated = $request->validate([
             'status' => 'required|in:agendado,concluido,cancelado',
         ]);

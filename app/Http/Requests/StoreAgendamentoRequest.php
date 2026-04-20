@@ -21,6 +21,21 @@ class StoreAgendamentoRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
+    public function prepareForValidation()
+    {
+        // Converter formato do datetime-local (YYYY-MM-DDTHH:mm) para Y-m-d H:i
+        if ($this->filled('data_hora_inicio')) {
+            $this->merge([
+                'data_hora_inicio' => str_replace('T', ' ', $this->data_hora_inicio),
+            ]);
+        }
+        if ($this->filled('data_hora_fim')) {
+            $this->merge([
+                'data_hora_fim' => str_replace('T', ' ', $this->data_hora_fim),
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [

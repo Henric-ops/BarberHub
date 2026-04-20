@@ -31,32 +31,51 @@
 
                 <nav class="nav nav-pills flex-column gap-2">
                     <a href="{{ route('dashboard') }}" class="nav-link d-flex align-items-center gap-2 {{ $current === 'dashboard' ? 'active' : '' }}">
-                        <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 36px; height: 36px; background: rgba(37, 99, 235, 0.08);">
-                            <i class="fas fa-chart-line text-primary"></i>
+                        <span class="sidebar-icon">
+                            <i class="fas fa-chart-line"></i>
                         </span>
                         Dashboard
                     </a>
 
-                    <a href="{{ route('agendamentos.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'agendamentos') ? 'active' : '' }}">
-                        <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 36px; height: 36px; background: rgba(37, 99, 235, 0.08);">
-                            <i class="fas fa-calendar-alt text-primary"></i>
-                        </span>
-                        Agendamentos
-                    </a>
+                    @if(auth()->user()->isAdministrador())
+                        {{-- NAVEGAÇÃO DO ADMINISTRADOR --}}
+                        <a href="{{ route('agendamentos.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'agendamentos') ? 'active' : '' }}">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </span>
+                            Agendamentos
+                        </a>
 
-                    <a href="{{ route('clientes.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'clientes') ? 'active' : '' }}">
-                        <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 36px; height: 36px; background: rgba(16, 185, 129, 0.12);">
-                            <i class="fas fa-users text-success"></i>
-                        </span>
-                        Clientes
-                    </a>
+                        <a href="{{ route('clientes.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'clientes') ? 'active' : '' }}">
+                            <span class="sidebar-icon" style="background: rgba(5, 150, 105, 0.12); color: #059669;">
+                                <i class="fas fa-users"></i>
+                            </span>
+                            Clientes
+                        </a>
 
-                    <a href="{{ route('servicos.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'servicos') ? 'active' : '' }}">
-                        <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 36px; height: 36px; background: rgba(37, 99, 235, 0.08);">
-                            <i class="fas fa-scissors text-primary"></i>
-                        </span>
-                        Serviços
-                    </a>
+                        <a href="{{ route('barbeiros.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'barbeiros') ? 'active' : '' }}">
+                            <span class="sidebar-icon" style="background: rgba(37, 99, 235, 0.12); color: #2563EB;">
+                                <i class="fas fa-user-tie"></i>
+                            </span>
+                            Barbeiros
+                        </a>
+
+                        <a href="{{ route('servicos.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'servicos') ? 'active' : '' }}">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-scissors"></i>
+                            </span>
+                            Serviços
+                        </a>
+
+                    @else
+                        {{-- NAVEGAÇÃO DO BARBEIRO --}}
+                        <a href="{{ route('agendamentos.index') }}" class="nav-link d-flex align-items-center gap-2 {{ str_starts_with($current, 'agendamentos') ? 'active' : '' }}">
+                            <span class="sidebar-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </span>
+                            Meus Agendamentos
+                        </a>
+                    @endif
                 </nav>
 
                 <div class="mt-auto pt-4">
@@ -67,8 +86,8 @@
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="btn btn-outline-secondary w-100">
-                            <i class="fas fa-sign-out-alt me-1"></i> Sair
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="fas fa-sign-out-alt"></i> Sair
                         </button>
                     </form>
                 </div>
@@ -77,19 +96,33 @@
             <div class="flex-grow-1 d-flex flex-column">
                 <header class="topbar px-4 py-3 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                     <div>
-                        <h1 class="h5 mb-1">{{ $title ?? 'Visão geral' }}</h1>
-                        <p class="text-muted mb-0">Controle os agendamentos, clientes e serviços em um só lugar.</p>
+                        <h1 class="h5 mb-1">
+                            @if(auth()->user()->isAdministrador())
+                                {{ $title ?? 'Painel Administrativo' }}
+                            @else
+                                {{ $title ?? 'Meus Agendamentos' }}
+                            @endif
+                        </h1>
+                        <p class="text-muted mb-0">
+                            @if(auth()->user()->isAdministrador())
+                                Controle os agendamentos, clientes e serviços em um só lugar.
+                            @else
+                                Visualize e gerencie seus agendamentos como barbeiro.
+                            @endif
+                        </p>
                     </div>
 
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="{{ route('agendamentos.create') }}" class="btn btn-primary btn-sm rounded-pill">
-                            <i class="fas fa-plus me-1"></i> Novo agendamento
-                        </a>
+                    @if(auth()->user()->isAdministrador())
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{{ route('agendamentos.create') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Novo agendamento
+                            </a>
 
-                        <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
-                            <i class="fas fa-users me-1"></i> Clientes
-                        </a>
-                    </div>
+                            <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-users"></i> Clientes
+                            </a>
+                        </div>
+                    @endif
                 </header>
 
                 <main class="p-4 p-xl-5">
