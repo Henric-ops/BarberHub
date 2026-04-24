@@ -20,25 +20,32 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::middleware('auth')->group(function () {
-    // Dashboard unificado
-    Route::get('dashboard', function () {
-        $data = [];
-        
-        if (auth()->user()->isAdministrador()) {
+    // Dashboard do administrador (protegido)
+    Route::middleware('only.admin')->group(function () {
+        Route::get('dashboard', function () {
             $data = [
                 'clientesCount' => Cliente::count(),
                 'servicosCount' => Servico::count(),
                 'agendamentosCount' => Agendamento::count(),
                 'barbeirosCount' => User::where('cargo', 'barbeiro')->count(),
             ];
-        } elseif (auth()->user()->isBarbeiro()) {
+            return view('dashboard', $data);
+        })->name('dashboard');
+
+        Route::get('/relatorio/agendamentos', [RelatorioAgendamentosController::class, 'relatorioAgendamentos'])->name('relatorio.agendamentos');
+        Route::get('/relatorio/servicos', [RelatorioServicosController::class, 'relatorioServicos'])->name('relatorio.servicos');
+
+    });
+
+    // Dashboard do barbeiro (protegido)
+    Route::middleware('only.barbeiro')->group(function () {
+        Route::get('barbeiro/dashboard', function () {
             $data = [
                 'agendamentosCount' => auth()->user()->agendamentos()->count(),
             ];
-        }
-        
-        return view('dashboard', $data);
-    })->name('dashboard');
+            return view('barbeiro.dashboard', $data);
+        })->name('barbeiro.dashboard');
+    });
 
     // Rotas disponíveis para todos (mas dados filtrados por cargo)
     Route::resource('clientes', ClienteController::class);

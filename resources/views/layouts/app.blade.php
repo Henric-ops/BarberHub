@@ -11,8 +11,8 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-    <!-- Vite (CSS e JS do projeto) -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
 </head>
 
 <body class="min-vh-100">
