@@ -6,6 +6,8 @@ use App\Http\Controllers\AgendamentoController;
 use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\BarbeiroController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RelatorioAgendamentosController;
+use App\Http\Controllers\RelatorioServicosController;
 use App\Models\Agendamento;
 use App\Models\Cliente;
 use App\Models\Servico;
