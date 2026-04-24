@@ -31,9 +31,11 @@ class RelatorioAgendamentosController extends Controller
         $concluidos = $agendamentos->where('status', 'concluido')->count();
         $cancelados = $agendamentos->where('status', 'cancelado')->count();
 
+        
+
 
         // Carregar a view e passar os dados
-        $pdf = Pdf::loadView('relatorio.relagendamentos', compact(
+        $pdf = Pdf::loadView('relatorios.agendamentos', compact(
             'agendamentos',
             'dataInicio',
             'dataFim',

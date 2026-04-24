@@ -32,7 +32,7 @@ class RelatorioServicosController extends Controller
 
 
         // Carregar a view e passar os dados
-        $pdf = Pdf::loadView('relatorio.relservicos', compact(
+        $pdf = Pdf::loadView('relatorios.servicos', compact(
             'servicos',
             'totalServicos',
             'servicosMaisUtilizados',

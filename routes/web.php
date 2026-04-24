@@ -37,6 +37,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/relatorio/agendamentos', [RelatorioAgendamentosController::class, 'relatorioAgendamentos'])->name('relatorio.agendamentos');
         Route::get('/relatorio/servicos', [RelatorioServicosController::class, 'relatorioServicos'])->name('relatorio.servicos');
 
+        Route::get('/relatorios', function () {
+            return view('relatorios.index');
+        })->name('relatorios.index');
     });
 
     // Dashboard do barbeiro (protegido)

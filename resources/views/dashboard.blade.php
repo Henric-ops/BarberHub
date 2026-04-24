@@ -52,10 +52,8 @@
 
     </div>
 
-    <!-- GRID -->
     <div class="content-grid">
 
-        <!-- LEFT -->
         <div style="display:flex;flex-direction:column;gap:20px;">
 
             <div class="panel">
@@ -75,27 +73,16 @@
                 <div class="schedule-body">
 
                     <div class="sched-row">
-                        <span class="sched-time">08:30</span>
                         <div class="sched-info">
-                            <span class="sched-dot green"></span>
                             <div>
-                                <div class="sched-name">Lucas Mendonça</div>
-                                <div class="sched-service">Corte + Barba</div>
+                                <!-- aqui vamos colocar os dados do cliente, serviço e horário do agendamento -->
+                              
                             </div>
                         </div>
-                        <span class="status-pill confirmed">Confirmado</span>
                     </div>
 
                     <div class="sched-row">
-                        <span class="sched-time">09:15</span>
-                        <div class="sched-info">
-                            <span class="sched-dot gold"></span>
-                            <div>
-                                <div class="sched-name">Carlos Andrade</div>
-                                <div class="sched-service">Corte Social</div>
-                            </div>
-                        </div>
-                        <span class="status-pill pending">Pendente</span>
+
                     </div>
 
                 </div>

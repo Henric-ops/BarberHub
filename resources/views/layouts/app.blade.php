@@ -59,18 +59,25 @@
                             <i class="fas fa-cut"></i> Serviços
                         </a>
                     </li>
-                </ul>
 
-                <div class="nav-section-label">Gestão</div>
 
-                <ul style="list-style:none;padding:0">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('barbeiros.*') ? 'active' : '' }}"
-                            href="{{ route('barbeiros.index') }}">
-                            <i class="fas fa-user-tie"></i> Barbeiros
+                        <a class="nav-link {{ request()->routeIs('relatorios.*') ? 'active' : '' }}"
+                            href="{{ route('relatorios.index') }}">
+                            <i class="fas fa-chart-bar"></i> Relatórios
                         </a>
                     </li>
-                </ul>
+
+                    <div class="nav-section-label">Gestão</div>
+
+                    <ul style="list-style:none;padding:0">
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('barbeiros.*') ? 'active' : '' }}"
+                                href="{{ route('barbeiros.index') }}">
+                                <i class="fas fa-user-tie"></i> Barbeiros
+                            </a>
+                        </li>
+                    </ul>
             </nav>
 
             <div class="sidebar-footer">
