@@ -11,12 +11,10 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet" />
-
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 </head>
 
 <body>
-
     <div class="layout">
 
         <!-- SIDEBAR -->
@@ -29,47 +27,44 @@
             </div>
 
             <nav class="sidebar-nav">
-                <div class="nav-section-label">Principal</div>
 
-                <ul style="list-style:none;padding:0">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                            href="{{ route('dashboard') }}">
-                            <i class="fas fa-chart-line"></i> Dashboard
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('agendamentos.*') ? 'active' : '' }}"
-                            href="{{ route('agendamentos.index') }}">
-                            <i class="fas fa-calendar-alt"></i> Agendamentos
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('clientes.*') ? 'active' : '' }}"
-                            href="{{ route('clientes.index') }}">
-                            <i class="fas fa-users"></i> Clientes
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('servicos.*') ? 'active' : '' }}"
-                            href="{{ route('servicos.index') }}">
-                            <i class="fas fa-cut"></i> Serviços
-                        </a>
-                    </li>
-
-
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('relatorios.*') ? 'active' : '' }}"
-                            href="{{ route('relatorios.index') }}">
-                            <i class="fas fa-chart-bar"></i> Relatórios
-                        </a>
-                    </li>
+                @if(auth()->user()->isAdministrador())
+                    {{-- ========== MENU DO ADMINISTRADOR ========== --}}
+                    <div class="nav-section-label">Principal</div>
+                    <ul style="list-style:none;padding:0">
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                                href="{{ route('dashboard') }}">
+                                <i class="fas fa-chart-line"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('agendamentos.*') ? 'active' : '' }}"
+                                href="{{ route('agendamentos.index') }}">
+                                <i class="fas fa-calendar-alt"></i> Agendamentos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('clientes.*') ? 'active' : '' }}"
+                                href="{{ route('clientes.index') }}">
+                                <i class="fas fa-users"></i> Clientes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('servicos.*') ? 'active' : '' }}"
+                                href="{{ route('servicos.index') }}">
+                                <i class="fas fa-cut"></i> Serviços
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('relatorios.*') ? 'active' : '' }}"
+                                href="{{ route('relatorios.index') }}">
+                                <i class="fas fa-chart-bar"></i> Relatórios
+                            </a>
+                        </li>
+                    </ul>
 
                     <div class="nav-section-label">Gestão</div>
-
                     <ul style="list-style:none;padding:0">
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('barbeiros.*') ? 'active' : '' }}"
@@ -78,6 +73,26 @@
                             </a>
                         </li>
                     </ul>
+
+                @else
+                    {{-- ========== MENU DO BARBEIRO ========== --}}
+                    <div class="nav-section-label">Menu</div>
+                    <ul style="list-style:none;padding:0">
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('barbeiro.dashboard') ? 'active' : '' }}"
+                                href="{{ route('barbeiro.dashboard') }}">
+                                <i class="fas fa-chart-line"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('barbeiro.agendamentos') ? 'active' : '' }}"
+                                href="{{ route('barbeiro.agendamentos') }}">
+                                <i class="fas fa-calendar-alt"></i> Meus Agendamentos
+                            </a>
+                        </li>
+                    </ul>
+                @endif
+
             </nav>
 
             <div class="sidebar-footer">
@@ -89,7 +104,6 @@
                     </div>
                     <i class="fas fa-sign-out-alt" style="font-size:10px;color:var(--text-dim)"></i>
                 </div>
-
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
@@ -103,7 +117,12 @@
             <div class="topbar">
                 <div class="topbar-left">
                     <h1>@yield('title', 'Dashboard')</h1>
-                    <p>Visão geral da sua barbearia —
+                    <p>
+                        @if(auth()->user()->isAdministrador())
+                            Visão geral da sua barbearia —
+                        @else
+                            Seus agendamentos —
+                        @endif
                         <span id="js-date" style="color:var(--gold)"></span>
                     </p>
                 </div>
@@ -113,21 +132,20 @@
                         <i class="fas fa-search" style="font-size:13px"></i>
                     </div>
 
-                    <a href="{{ route('agendamentos.create') }}" class="btn-primary-gold">
-                        <i class="fas fa-plus"></i> Novo agendamento
-                    </a>
+                    @if(auth()->user()->isAdministrador())
+                        <a href="{{ route('agendamentos.create') }}" class="btn-primary-gold">
+                            <i class="fas fa-plus"></i> Novo agendamento
+                        </a>
+                    @endif
                 </div>
             </div>
 
-            <!-- CONTEÚDO DINÂMICO -->
             @yield('content')
 
         </main>
-
     </div>
 
     <script>
-        // DATA
         const d = new Date();
         document.getElementById('js-date').textContent =
             d.toLocaleDateString('pt-BR', {
