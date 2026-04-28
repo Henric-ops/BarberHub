@@ -413,8 +413,8 @@ body {
 /* ── CONTENT GRID ────────────────────────────── */
 .content-grid {
     display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 20px;
+    grid-template-columns: 1fr 10px;
+    gap: 0px;
 }
 
 /* ── PANEL ───────────────────────────────────── */

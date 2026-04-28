@@ -112,57 +112,6 @@
             </div>
 
         </div>
-
-        <!-- RIGHT -->
-        <div class="right-col">
-            <div class="actions-panel">
-                <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-bolt"></i> Ações rápidas</div>
-                </div>
-
-                <a href="{{ route('clientes.index') }}" class="action-item" style="text-decoration:none;color:inherit;">
-                    <div class="action-icon" style="background:var(--green-dim);color:var(--green)">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <div class="action-text">
-                        <div class="action-title">Clientes</div>
-                        <div class="action-sub">Gerenciar clientes</div>
-                    </div>
-                </a>
-
-                <a href="{{ route('servicos.index') }}" class="action-item" style="text-decoration:none;color:inherit;">
-                    <div class="action-icon" style="background:var(--blue-dim);color:var(--blue)">
-                        <i class="fas fa-scissors"></i>
-                    </div>
-                    <div class="action-text">
-                        <div class="action-title">Serviços</div>
-                        <div class="action-sub">Gerenciar serviços</div>
-                    </div>
-                </a>
-
-                <a href="{{ route('agendamentos.index') }}" class="action-item" style="text-decoration:none;color:inherit;">
-                    <div class="action-icon" style="background:var(--gold-dim);color:var(--gold)">
-                        <i class="fas fa-calendar"></i>
-                    </div>
-                    <div class="action-text">
-                        <div class="action-title">Agendamentos</div>
-                        <div class="action-sub">Ver agenda completa</div>
-                    </div>
-                </a>
-
-                <a href="{{ route('barbeiros.index') }}" class="action-item" style="text-decoration:none;color:inherit;">
-                    <div class="action-icon" style="background:var(--gold-dim);color:var(--gold)">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <div class="action-text">
-                        <div class="action-title">Barbeiros</div>
-                        <div class="action-sub">Gerenciar barbeiros</div>
-                    </div>
-                </a>
-
-            </div>
-        </div>
-
     </div>
 
 @endsection

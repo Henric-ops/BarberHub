@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BarberOS</title>
+    <title>BarberHub</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
@@ -128,9 +128,6 @@
                 </div>
 
                 <div class="topbar-right">
-                    <div class="icon-btn">
-                        <i class="fas fa-search" style="font-size:13px"></i>
-                    </div>
 
                     @if(auth()->user()->isAdministrador())
                         <a href="{{ route('agendamentos.create') }}" class="btn-primary-gold">

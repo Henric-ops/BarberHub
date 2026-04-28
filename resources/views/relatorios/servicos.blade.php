@@ -191,7 +191,7 @@
     
     <!-- FOOTER -->
     <div class="footer">
-        Gerado em {{ now()->format('d/m/Y H:i:s') }} | BarberOS
+        Gerado em {{ now()->format('d/m/Y H:i:s') }} | BarberHub
     </div>
     
 </body>

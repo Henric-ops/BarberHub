@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 <div class="barb-page">
 
-    {{-- ── HERO ─────────────────────────────────────────────── --}}
     <div class="barb-hero a1">
         <div>
             <h1 class="barb-hero-greeting">
@@ -36,7 +35,6 @@
         @endif
     </div>
 
-    {{-- ── KPIs ─────────────────────────────────────────────── --}}
     <div class="barb-kpis a2">
 
         <div class="barb-kpi kpi-gold">
@@ -65,11 +63,11 @@
 
     </div>
 
-    {{-- ── CONTENT GRID ──────────────────────────────────────── --}}
     <div class="barb-content">
 
-        {{-- ── LEFT: AGENDA DO DIA ──────────────────────────── --}}
-        <div class="barb-panel a3">
+      <!-- agenda de hoje -->
+
+    <div class="barb-panel a3">
             <div class="barb-panel-head">
                 <div class="barb-panel-title">
                     <i class="fas fa-calendar-day"></i> Agenda de Hoje
