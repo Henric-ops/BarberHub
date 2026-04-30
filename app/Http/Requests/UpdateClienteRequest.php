@@ -22,7 +22,9 @@ class UpdateClienteRequest extends FormRequest
      */
     public function rules(): array
     {
-        $clienteId = $this->route('cliente');
+        $cliente = $this->route('cliente'); // objeto
+        $clienteId = $cliente?->id; // pega o ID com segurança
+
         return [
             'nome' => 'nullable|string|max:255',
             'cpf' => 'nullable|string|unique:clientes,cpf,' . $clienteId,
